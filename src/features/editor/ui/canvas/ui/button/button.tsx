@@ -8,11 +8,18 @@ export const ButtonComponent = ({
 }) => {
   const { content, style, outerStyle, url } = element;
 
+  if (url !== '')
+    return (
+      <a href={url}>
+        <button style={style} className={outerStyle}>
+          {content}
+        </button>
+      </a>
+    );
+
   return (
-    <a href={url}>
-      <button style={style} className={outerStyle}>
-        {content}
-      </button>
-    </a>
+    <button style={style} className={outerStyle}>
+      {content}
+    </button>
   );
 };

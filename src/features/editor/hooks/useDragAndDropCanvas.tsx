@@ -2,6 +2,7 @@ import { useState, DragEvent as ReactDragEvent } from 'react';
 import { SidebarElementLayout } from '../data/layout.data';
 import { SidebarElementComponent } from '../data/component.data';
 import { generateId } from '@/shared/utils/generateId';
+import { useEmailTemplate } from '@/shared/store/email-template.store';
 
 export type DragLayoutType = SidebarElementLayout & { id: number };
 export type DragComponentType = SidebarElementComponent & { id: number };
@@ -10,7 +11,7 @@ type CanvasLayoutType = {
   dragComponent: DragComponentType | null;
 };
 
-export type CanvasItemsType = (DragLayoutType & DragComponentType)[];
+export type CanvasItemsType = DragLayoutType & DragComponentType;
 
 export type DragOverState = {
   columnId: number;
@@ -22,9 +23,10 @@ export const useDragAndDropCanvas = () => {
     dragComponent: null,
     dragLayout: null,
   });
-
-  const [emailTemplate, setEmailTemplate] = useState<CanvasItemsType[]>([]);
   const [dragOverCanvas, setDragOverCanvas] = useState(false);
+
+  const { setEmailTemplate, setComponentToLayout } = useEmailTemplate();
+
   const [dragOverLayoutElement, setDragOverLayoutElement] =
     useState<DragOverState>(null);
 
@@ -58,10 +60,9 @@ export const useDragAndDropCanvas = () => {
 
   // Events для Canvas
   const onDropHandleLayoutToCanvas = () => {
-    console.log(layout?.dragLayout);
     setDragOverCanvas(false);
     if (layout?.dragLayout) {
-      setEmailTemplate((prev: any) => [...prev, layout?.dragLayout]);
+      setEmailTemplate(layout?.dragLayout as CanvasItemsType);
     }
   };
 
@@ -74,7 +75,7 @@ export const useDragAndDropCanvas = () => {
     index: number
   ) => {
     e.preventDefault();
-    console.log(element);
+
     setDragOverLayoutElement({
       index,
       columnId: element.id,
@@ -84,28 +85,16 @@ export const useDragAndDropCanvas = () => {
   // Events для Layout элементов
   const onDropComponentToLayout = (element: DragLayoutType) => {
     const columnIndex = dragOverLayoutElement?.index;
-    console.log(columnIndex);
-    setEmailTemplate((prevItem) =>
-      prevItem.map((item) =>
-        //@ts-ignore
-        item.id === element.id
-          ? {
-              ...item,
-              //@ts-ignore
-              [columnIndex]: {
-                ...layout.dragComponent,
-                id: generateId(),
-                icon: null,
-              },
-            }
-          : item
-      )
+    const columnId = dragOverLayoutElement?.columnId;
+    setComponentToLayout(
+      layout.dragComponent as DragComponentType,
+      columnIndex as number,
+      columnId as number
     );
     setDragOverLayoutElement(null);
   };
 
   return {
-    emailTemplate,
     layout,
     onChangeLayout,
     onChangeComponent,

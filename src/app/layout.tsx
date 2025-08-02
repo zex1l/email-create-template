@@ -2,10 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Header from '@/widgets/header/header';
-import ConvexClientProvider from '@/shared/providers/convex.provider';
 import { ConvexAuthNextjsServerProvider } from '@convex-dev/auth/nextjs/server';
-import { Provider } from 'react-redux';
-import { store } from '@/shared/store/store';
 import { MainProvider } from '@/shared/providers/main.provider';
 
 const geistSans = Geist({

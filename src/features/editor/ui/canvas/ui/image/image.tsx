@@ -6,7 +6,16 @@ export const ImageComponent = ({
 }: {
   element: ComponentTypeInLayout;
 }) => {
-  const { style, alt, imageUrl, outerStyle } = element;
+  const { style, alt, imageUrl, outerStyle, url } = element;
+
+  if (url !== '')
+    return (
+      <div className={outerStyle}>
+        <a href={url} target='_blank'>
+          <img style={style} src={imageUrl} alt={alt} />
+        </a>
+      </div>
+    );
 
   return (
     <div className={outerStyle}>
