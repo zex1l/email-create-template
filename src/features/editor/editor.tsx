@@ -12,22 +12,28 @@ import { useEmailTemplate } from '@/shared/store/email-template.store';
 import { useClickOutside } from './hooks/use-click-outside';
 import { useGetHtmlCode } from './hooks/use-get-html-code';
 import { useGetTemplateFromDb } from './hooks/use-get-template-from-db';
+import { useSaveTemplate } from './hooks/use-save-template';
 
 type Props = {
-  templateId: string;
+  templateId: string | undefined;
 };
 
 const Editor = ({ templateId }: Props) => {
   const { screen, setScreen } = useScreenSize();
   const { dragComponent, dragLayout } = useDragAndDropCanvas();
-  const { emailTemplate } = useEmailTemplate();
   const { wrapperRef, settingsRef } = useClickOutside();
   const { refHtmlBlock, onOpenCodeModal } = useGetHtmlCode();
-  useGetTemplateFromDb({ templateId });
+
+  const { emailTemplate } = useEmailTemplate();
+  useGetTemplateFromDb({ templateId: templateId || '' });
+  const { loadingUpdate, onSaveTemplate } = useSaveTemplate({
+    templateId: templateId || '',
+  });
 
   return (
     <div className="px-5 my-10 flex flex-col gap-5 h-[85%]">
       <EditorHeader
+        buttonSave={{ onSaveTemplate, loadingUpdate }}
         onOpenModal={onOpenCodeModal}
         onChageScreenSize={setScreen}
         title={

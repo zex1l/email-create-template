@@ -11,6 +11,7 @@ export default defineSchema({
   emailTemplate: defineTable({
     templateId: v.string(),
     design: v.any(),
+    description: v.string(),
     email: v.string(),
   }),
 });

@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
-
 export const useGenerateAi = () => {
   const [userPrompt, setUserPrompt] = useState('');
   const [loading, setLoading] = useState(false);
@@ -36,6 +35,7 @@ export const useGenerateAi = () => {
         templateId,
         design: result.data,
         email: user.email,
+        description: userPrompt,
       });
 
       setLoading(false);

@@ -24,3 +24,22 @@ export const formateValue = (
     unit: null,
   };
 };
+
+export const formateTimestampToDate = (timestamp: number) => {
+  const date = new Date(timestamp);
+  const dateString = date
+    .toLocaleDateString('ru-RU', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+    .replace(/\./g, '.');
+
+  const timeString = date.toLocaleTimeString('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+
+  return `${dateString} - ${timeString}`;
+};

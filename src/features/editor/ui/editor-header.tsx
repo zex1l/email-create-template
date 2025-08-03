@@ -7,6 +7,7 @@ export const EditorHeader = ({
   screenSize,
   onChageScreenSize,
   onOpenModal,
+  buttonSave: { onSaveTemplate, loadingUpdate },
 }: Props) => {
   return (
     <div className="flex flex-col  justify-between gap-6 lg:flex-row lg:items-center">
@@ -34,7 +35,9 @@ export const EditorHeader = ({
           <Code />
         </Button>
         <Button variant={'outline'}>Send Test Email</Button>
-        <Button>Save Templates</Button>
+        <Button disabled={loadingUpdate} onClick={onSaveTemplate}>
+          Save Templates
+        </Button>
       </div>
     </div>
   );
@@ -45,4 +48,8 @@ type Props = {
   screenSize: ScreenType;
   onChageScreenSize: (screenSize: ScreenType) => void;
   onOpenModal: () => void;
+  buttonSave: {
+    onSaveTemplate: () => void;
+    loadingUpdate: boolean;
+  };
 };

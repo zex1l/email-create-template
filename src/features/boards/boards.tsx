@@ -9,9 +9,14 @@ import {
 import { Button } from '@/shared/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { BoardsToggleView } from './ui/boards-toggle-view';
+import Link from 'next/link';
+import { useGetBoards } from './hooks/use-get-boards';
+import { BoardsListItem } from './ui/boards-list-item';
+import { formateTimestampToDate } from '@/shared/utils/formaters';
 
 const Boards = () => {
   const [mode, setMode] = useState<ModeView>('list');
+  const { emailTemplates } = useGetBoards();
 
   return (
     <div className="h-full">
@@ -23,15 +28,32 @@ const Boards = () => {
             }
             actions={
               <>
-                <Button>
-                  Create template <PlusIcon />
-                </Button>
+                <Link href={'/boards/create'}>
+                  <Button>
+                    Create template <PlusIcon />
+                  </Button>
+                </Link>
                 <BoardsToggleView onChange={setMode} value={mode} />
               </>
             }
           />
         }
-        list={<BoardsListLayout mode={mode} />}
+        list={
+          <BoardsListLayout
+            mode={mode}
+            list={
+              emailTemplates &&
+              emailTemplates.map((template, index) => (
+                <BoardsListItem
+                  view={mode}
+                  key={index}
+                  date={formateTimestampToDate(template._creationTime)}
+                  {...template}
+                />
+              ))
+            }
+          />
+        }
       />
     </div>
   );

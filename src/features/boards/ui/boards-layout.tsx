@@ -30,15 +30,15 @@ export const BoardsLyoutHeader = ({
   );
 };
 
-export const BoardsListLayout = ({ mode }: { mode: ModeView }) => {
+export const BoardsListLayout = ({ mode, list }: { mode: ModeView, list?: React.ReactNode }) => {
   switch (mode) {
     case 'grid':
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          grid
+          {list}
         </div>
       );
     case 'list':
-      return <div className="flex flex-col gap-4">list</div>;
+      return <div className="flex flex-col gap-4">{list}</div>;
   }
 };
