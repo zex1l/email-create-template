@@ -8,4 +8,9 @@ export default defineSchema({
     name: v.string(),
     email: v.string(),
   }),
+  emailTemplate: defineTable({
+    templateId: v.string(),
+    design: v.any(),
+    email: v.string(),
+  }),
 });

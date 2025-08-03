@@ -1,16 +1,15 @@
 import Editor from '@/features/editor/editor';
-import { NextPage } from 'next';
 
 const Page = async ({
   params,
 }: {
   params: Promise<{
-    templateId: string[];
+    templateId: string;
   }>;
 }) => {
   const { templateId } = await params;
-  console.log(templateId);
-  return <Editor />;
+
+  return <Editor templateId={templateId} />;
 };
 
 export default Page;

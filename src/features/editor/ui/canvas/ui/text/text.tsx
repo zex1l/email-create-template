@@ -8,5 +8,8 @@ export const TextComponent = ({
 }) => {
   const { content, style } = element;
 
-  return <div style={style}>{content}</div>;
+  return (
+    <div style={style} dangerouslySetInnerHTML={{ __html: content }}>
+    </div>
+  );
 };

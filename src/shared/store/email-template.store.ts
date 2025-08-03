@@ -3,7 +3,7 @@ import {
   CanvasItemsType,
   DragComponentType,
   DragLayoutType,
-} from '@/features/editor/hooks/useDragAndDropCanvas';
+} from '@/features/editor/hooks/use-drag-and-drop-canvas';
 import { CSSProperties } from 'react';
 import { create } from 'zustand';
 
@@ -18,11 +18,16 @@ type EmailTemplateStore = {
   selectedComponent: SidebarElementComponent | null;
 
   setEmailTemplate: (emailTemplate: CanvasItemsType) => void;
+  setFullEmailTemplate: (emailTemplate: CanvasItemsType[]) => void;
   setComponentToLayout: (
     component: DragComponentType,
     columnIndex: number,
     columnId: number
   ) => void;
+
+  deleteLayoutElement: (elementId: number) => void;
+  moveLayoutElement: (elementId: number, action: 'up' | 'down') => void;
+
   setSelectedElement: (element: SelectedElementType) => void;
   resetSelectedElement: () => void;
 
@@ -43,6 +48,11 @@ export const useEmailTemplate = create<EmailTemplateStore>((set, get) => ({
       emailTemplate: [...state.emailTemplate, emailTemplate],
     })),
 
+  setFullEmailTemplate: (emailTemplate: CanvasItemsType[]) =>
+    set((state) => ({
+      emailTemplate: emailTemplate,
+    })),
+
   setComponentToLayout: (
     component: DragComponentType,
     columnIndex: number,
@@ -57,6 +67,56 @@ export const useEmailTemplate = create<EmailTemplateStore>((set, get) => ({
             }
           : item
       ),
+    }));
+  },
+
+  deleteLayoutElement: (elementId) => {
+    set((state) => ({
+      emailTemplate: state.emailTemplate.filter(
+        (item) => item.id !== elementId
+      ),
+    }));
+  },
+
+  moveLayoutElement: (elementId, action) => {
+    const emailTemplateCopy = get().emailTemplate;
+
+    const indexElement = emailTemplateCopy.findIndex(
+      (item) => item.id === elementId
+    );
+
+    if (
+      emailTemplateCopy.length < 2 ||
+      indexElement === -1 ||
+      (indexElement === 0 && action === 'up') ||
+      (indexElement === emailTemplateCopy.length - 1 && action === 'down')
+    )
+      return;
+
+    if (action === 'up') {
+      [
+        ([
+          emailTemplateCopy[indexElement],
+          emailTemplateCopy[indexElement - 1],
+        ] = [
+          emailTemplateCopy[indexElement - 1],
+          emailTemplateCopy[indexElement],
+        ]),
+      ];
+    } else {
+      [
+        ([
+          emailTemplateCopy[indexElement],
+          emailTemplateCopy[indexElement + 1],
+        ] = [
+          emailTemplateCopy[indexElement + 1],
+          emailTemplateCopy[indexElement],
+        ]),
+      ];
+    }
+
+    set(() => ({
+      emailTemplate: emailTemplateCopy,
     }));
   },
 

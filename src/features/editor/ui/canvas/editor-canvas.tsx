@@ -1,10 +1,15 @@
-import { ScreenType } from '../../hooks/useScreenSize';
-import { forwardRef, DragEvent as ReactDragEvent, useState } from 'react';
+import { ScreenType } from '../../hooks/use-screen-size';
+import {
+  forwardRef,
+  DragEvent as ReactDragEvent,
+  RefObject,
+  useState,
+} from 'react';
 import {
   CanvasItemsType,
   DragLayoutType,
   DragOverState,
-} from '../../hooks/useDragAndDropCanvas';
+} from '../../hooks/use-drag-and-drop-canvas';
 import { Column } from './ui/column/column';
 
 type CanvasProps = {
@@ -20,6 +25,7 @@ type CanvasProps = {
   ) => void;
   dragOverElement: DragOverState;
   dragOver: boolean;
+  refHtmlBlock: RefObject<HTMLDivElement | null>;
 };
 
 type EditorCanvasElementProps = {
@@ -44,21 +50,24 @@ const EditorCanvas = forwardRef<HTMLDivElement, CanvasProps>(
       onDragOverToElement,
       onDropToElement,
       dragOverElement,
+      refHtmlBlock,
     },
     ref
   ) => {
     const hasElements = canvasElements.length > 0;
 
     return (
-      <div className="flex justify-center py-10">
+      <div ref={ref} className="flex justify-center py-10">
         <div
-          ref={ref}
           className={`bg-white p-6 w-full border-dashed border-2 border-white  ${screenSize === 'desktop' ? 'max-w-2xl' : 'max-w-lg'} ${dragOver && 'bg-purple-200! border-primary!'}`}
           onDragOver={(e) => onDragOver(e)}
           onDrop={(e) => onDropHandle()}
+          ref={refHtmlBlock}
         >
           {!hasElements && (
-            <div className="text-center">Drop Elenements Here</div>
+            <div className="text-center text-gray-400">
+              Drop Elenements Here
+            </div>
           )}
           {hasElements &&
             canvasElements.map((element, key) => (

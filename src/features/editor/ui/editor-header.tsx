@@ -1,11 +1,12 @@
 import { Button } from '@/shared/ui/button';
 import { Code, Monitor, Smartphone } from 'lucide-react';
-import { ScreenType } from '../hooks/useScreenSize';
+import { ScreenType } from '../hooks/use-screen-size';
 
 export const EditorHeader = ({
   title,
   screenSize,
   onChageScreenSize,
+  onOpenModal,
 }: Props) => {
   return (
     <div className="flex flex-col  justify-between gap-6 lg:flex-row lg:items-center">
@@ -29,7 +30,7 @@ export const EditorHeader = ({
         </Button>
       </div>
       <div className="flex gap-2 items-center">
-        <Button variant={'secondary'}>
+        <Button onClick={onOpenModal} variant={'secondary'}>
           <Code />
         </Button>
         <Button variant={'outline'}>Send Test Email</Button>
@@ -43,4 +44,5 @@ type Props = {
   title: React.ReactNode;
   screenSize: ScreenType;
   onChageScreenSize: (screenSize: ScreenType) => void;
+  onOpenModal: () => void;
 };

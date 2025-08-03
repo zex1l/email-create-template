@@ -8,5 +8,5 @@ export const DividerComponent = ({
 }) => {
   const { style } = element;
 
-  return <div style={style}></div>;
+  return <div style={{ ...style, width: '100%' }}></div>;
 };

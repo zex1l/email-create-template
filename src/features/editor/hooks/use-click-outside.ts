@@ -3,13 +3,16 @@ import { useEffect, useRef } from 'react';
 
 export const useClickOutside = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const settingsRef = useRef<HTMLDivElement>(null);
   const { resetSelectedElement } = useEmailTemplate();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
+        !wrapperRef.current.contains(event.target as Node) &&
+        settingsRef.current &&
+        !settingsRef.current.contains(event.target as Node)
       ) {
         resetSelectedElement();
       }
@@ -18,7 +21,7 @@ export const useClickOutside = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [resetSelectedElement]);
 
-  return { wrapperRef };
+  return { wrapperRef, settingsRef };
 };

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { DragLayoutType } from '../../hooks/useDragAndDropCanvas';
+import { DragLayoutType } from '../../hooks/use-drag-and-drop-canvas';
 import { SidebarElementLayout } from '../../data/layout.data';
 
 export type SettingsContextType = {
